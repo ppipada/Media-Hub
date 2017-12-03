@@ -12,13 +12,16 @@ sudo pip3 install imdbpy
 sudo pip3 install djangorestframework
 ```
 
-### Database initialization
+### Initialization
+By default all the data is stored in directory specified at: Media_Portal.global_params.BASEPATH
+If needed change the base path to a valid directory
+
 If setting up the app for the **first time**, initialize the sqlite db
 ```
 python3 manage.py migrate
 ```
 
-### Setting Up
+### Scanning and populating movies
 Inside Media-Hub
 ```
 python3 Shelf.py "Media Directory(Suggested) or leave blank to search the whole hard drive"
@@ -28,9 +31,8 @@ Shelf.py goes through the given directory or the whole hard drive(depending on c
 This file is then accesed by populate command which then populates the database with relevent entires  
   
 **Note:**  
-1. Once Shelf.py starts indexing do not stop the program or else next time it'll start indexing from the start.The     process will take a lot of time depending upon movie files present in the specified directory and the net speed.    
-**(Can run it multiple times on smaller directories before proceeding to next step too)**  
-2.The populate command will take time depending on net speed as it fetches movie Posters.This task need not be done in one go you can stop the program and when you run it again it will not process movies that have already been put in Database.
+1. Once Shelf.py starts indexing do not stop the program or else next time it'll start indexing from the start.The process will take a lot of time depending upon movie files present in the specified directory and the net speed. **(Can run it multiple times on smaller directories before proceeding to next step too)**  
+2. The populate command will take time depending on net speed as it fetches movie Posters.This task need not be done in one go you can stop the program and when you run it again it will not process movies that have already been put in Database.
 
 ## Let's Start
 ```
