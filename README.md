@@ -34,7 +34,7 @@ This file is then accesed by populate command which then populates the database 
 
 ## Let's Start
 ```
-python manage.py runserver or python manage.py runserver 0.0.0.0:8000
+python3 manage.py runserver or python3 manage.py runserver 0.0.0.0:8000
 go to 127.0.0.1:8000
 ```
 **By using runserver 0.0.0.0:8000 user can access it from any device connected to the same network** 
@@ -59,7 +59,7 @@ Movies can be deleted or edited through the admin panel at **127.0.0.1:8000/admi
 But for that you will need to set up a superuser
 
 ```
-python manage.py createsuperuser
+python3 manage.py createsuperuser
 ```
 And now you can delete or edit movies from the admin panel using the username and password you set. 
 
