@@ -1,0 +1,1 @@
+BASEPATH = '/opt/mediahub/'

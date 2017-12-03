@@ -3,7 +3,7 @@ from Movies.models import Movie
 
 from django.core.files.base import ContentFile
 import shelve
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 
 class Command(BaseCommand):
@@ -45,7 +45,7 @@ class Command(BaseCommand):
                     mov.Director="Not Available"
                 try:
                     url=movie['full-size cover url']
-                    mov.Poster.save(movie['title']+'.jpg',ContentFile(urllib.urlopen(url).read()))
+                    mov.Poster.save(movie['title']+'.jpg',ContentFile(urllib.request.urlopen(url).read()))
                 except:
                     mov.Poster=None
                 if mov.Name =="Not Available" or 'TV' in mov.Genre or 'Show' in mov.Genre:

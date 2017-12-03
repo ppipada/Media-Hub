@@ -6,15 +6,17 @@ It also fetches a **Youtube Trailer** link for the movie.
 
 ### Installations
 ```
-sudo apt-get install python-django
-sudo pip install imdbpy
+sudo apt-get install python3-pip
+sudo apt-get install python3-django
+sudo pip3 install imdbpy
+sudo pip3 install djangorestframework
 ```
 
 ### Setting Up
 ```
 Inside Media-Hub
-python Shelf.py "Media Directory(Suggested) or leave blank to search the whole hard drive"
-python manage.py populate
+python3 Shelf.py "Media Directory(Suggested) or leave blank to search the whole hard drive"
+python3 manage.py populate
 ```
 Shelf.py goes through the given directory or the whole hard drive(depending on choice) looking for potential movie files and then stores the movie object returned by Imdbpy in a file.  
 This file is then accesed by populate command which then populates the database with relevent entires  
