@@ -14,7 +14,7 @@ if os.name=='nt':
     import win32api
 
 VIDEO_FORMATS=('.mp4','.avi','.mkv','.flv')
-
+MOVIE_MIN_SIZE = 200*1024*1024
 access = imdb.IMDb()
 
 try:
@@ -83,7 +83,7 @@ def populate(path):
     for path,dirr,files in os.walk(path):
         for fil in files:
             for form in VIDEO_FORMATS:
-                if fil.endswith(form) and os.stat(os.path.join(path,fil)).st_size > 419430400:
+                if fil.endswith(form) and os.stat(os.path.join(path,fil)).st_size > MOVIE_MIN_SIZE:
                     filee=fil
                     fil=clean_name(fil,form)
                     if fil and fil not in Files:
@@ -103,7 +103,7 @@ def populate(path):
     shelffile3.close()
 
 if len(sys.argv) < 2:
-    print("USAGE: python Shelf.py 'Drive Path'")
+    print("USAGE: python3 Shelf.py 'Drive Path'")
     print("NOTE: If no path is given the whole hard drive would be scanned(Take a Lot Of Time) suggested: Specify path ")
     print("1.Exit and start again with Path specified")
     print("2.Scan the whole hard drive")
