@@ -13,7 +13,13 @@ class Command(BaseCommand):
         Shelf=shelve.open(settings.PATHS_FILE)
         for (movie,path) in zip(SFile['Movies'],Shelf['Paths']):
             mov=Movie()
-            if not Movie.objects.filter(Name=movie['title']).exists():
+            try:
+                ex = Movie.objects.filter(Name=movie['title']).exists()
+            except Exception as fault:
+                self.stdout.write("Got:fault {0} for {1}:{2}: \n path:{3}".format(str(fault), str(mov), str(movie), str(path)))
+                continue
+
+            if not ex:
                 try:
                     mov.Name=movie['title']
                 except:
