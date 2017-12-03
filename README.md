@@ -6,27 +6,37 @@ It also fetches a **Youtube Trailer** link for the movie.
 
 ### Installations
 ```
-sudo apt-get install python-django
-sudo pip install imdbpy
+sudo apt-get install python3-pip
+sudo apt-get install python3-django
+sudo pip3 install imdbpy
+sudo pip3 install djangorestframework
 ```
 
-### Setting Up
+### Initialization
+By default all the data is stored in directory specified at: Media_Portal.global_params.BASEPATH
+If needed change the base path to a valid directory
+
+If setting up the app for the **first time**, initialize the sqlite db
 ```
+python3 manage.py migrate
+```
+
+### Scanning and populating movies
 Inside Media-Hub
-python Shelf.py "Media Directory(Suggested) or leave blank to search the whole hard drive"
-python manage.py populate
 ```
-Shelf.py goes through the given directory or the whole hard drive(depending on choice) looking for potential movie files and then stores the movie object returned by Imdbpy in a file.  
+python3 Shelf.py "Media Directory(Suggested) or leave blank to search the whole hard drive"
+python3 manage.py populate
+```
+Shelf.py goes through the given directory or the whole hard drive(depending on choice) looking for potential movie files and then stores the movie object returned by Imdbpy in a file. 
 This file is then accesed by populate command which then populates the database with relevent entires  
   
 **Note:**  
-1. Once Shelf.py starts indexing do not stop the program or else next time it'll start indexing from the start.The     process will take a lot of time depending upon movie files present in the specified directory and the net speed.    
-**(Can run it multiple times on smaller directories before proceeding to next step too)**  
-2.The populate command will take time depending on net speed as it fetches movie Posters.This task need not be done in one go you can stop the program and when you run it again it will not process movies that have already been put in Database.
+1. Once Shelf.py starts indexing do not stop the program or else next time it'll start indexing from the start.The process will take a lot of time depending upon movie files present in the specified directory and the net speed. **(Can run it multiple times on smaller directories before proceeding to next step too)**  
+2. The populate command will take time depending on net speed as it fetches movie Posters.This task need not be done in one go you can stop the program and when you run it again it will not process movies that have already been put in Database.
 
 ## Let's Start
 ```
-python manage.py runserver or python manage.py runserver 0.0.0.0:8000
+python3 manage.py runserver or python3 manage.py runserver 0.0.0.0:8000
 go to 127.0.0.1:8000
 ```
 **By using runserver 0.0.0.0:8000 user can access it from any device connected to the same network** 
@@ -51,7 +61,7 @@ Movies can be deleted or edited through the admin panel at **127.0.0.1:8000/admi
 But for that you will need to set up a superuser
 
 ```
-python manage.py createsuperuser
+python3 manage.py createsuperuser
 ```
 And now you can delete or edit movies from the admin panel using the username and password you set. 
 

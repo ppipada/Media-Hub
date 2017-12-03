@@ -1,6 +1,7 @@
-import urllib
-from urllib2 import Request, urlopen, URLError
-import os
+import urllib.request, urllib.parse, urllib.error
+from urllib.request import Request, urlopen
+from urllib.error import URLError
+import os, errno
 import requests
 from lxml import html
 import imdb
@@ -8,22 +9,29 @@ import re
 import shelve
 import sys
 import itertools
+from Media_Portal import global_params  
 if os.name=='nt':
     import win32api
 
 VIDEO_FORMATS=('.mp4','.avi','.mkv','.flv')
-
+MOVIE_MIN_SIZE = 200*1024*1024
 access = imdb.IMDb()
 
-shelffile1=shelve.open('MovieData')
-shelffile2=shelve.open('Path')
-shelffile3=shelve.open('File')
+try:
+    os.makedirs(global_params.BASEPATH)
+except OSError as e:
+    if e.errno != errno.EEXIST:
+        raise
 
-if 'Movies' not in shelffile1.keys():
+shelffile1=shelve.open(global_params.MOVIEDATA_FILE)
+shelffile2=shelve.open(global_params.PATHS_FILE)
+shelffile3=shelve.open(global_params.FILENAMES_FILE)
+
+if 'Movies' not in list(shelffile1.keys()):
     shelffile1['Movies']=list()
-if 'Paths' not in shelffile2.keys():
+if 'Paths' not in list(shelffile2.keys()):
     shelffile2['Paths']=list()
-if 'Files' not in shelffile3.keys():
+if 'Files' not in list(shelffile3.keys()):
     shelffile3['Files']=list()
 
 if shelffile1['Movies']:
@@ -43,7 +51,7 @@ else:
 
 def get_imdb_id(input):
     """Function to get imdb id from input file name"""
-    query = urllib.quote_plus(input)
+    query = urllib.parse.quote_plus(input)
     url = "http://www.imdb.com/find?ref_=nv_sr_fn&q="+query+"&s=all"
     page = requests.get(url)
     tree = html.fromstring(page.content)
@@ -75,17 +83,17 @@ def populate(path):
     for path,dirr,files in os.walk(path):
         for fil in files:
             for form in VIDEO_FORMATS:
-                if fil.endswith(form) and os.stat(os.path.join(path,fil)).st_size > 419430400:
+                if fil.endswith(form) and os.stat(os.path.join(path,fil)).st_size > MOVIE_MIN_SIZE:
                     filee=fil
                     fil=clean_name(fil,form)
                     if fil and fil not in Files:
-                        print fil
+                        print(fil)
                         Files.append(fil)
                         if re.findall('([0-9]+)',get_imdb_id(fil))[0]!='00000':
                             movie=access.get_movie(re.findall('([0-9]+)',get_imdb_id(fil))[0])
                             Movies.append(movie)
                             Paths.append(os.path.join(path,filee))
-                            print movie
+                            print(movie)
                             break
     shelffile1['Movies']=Movies
     shelffile3['Files']=Files
@@ -95,11 +103,11 @@ def populate(path):
     shelffile3.close()
 
 if len(sys.argv) < 2:
-    print "USAGE: python Shelf.py 'Drive Path'"
-    print "NOTE: If no path is given the whole hard drive would be scanned(Take a Lot Of Time) suggested: Specify path "
-    print "1.Exit and start again with Path specified"
-    print "2.Scan the whole hard drive"
-    choice=raw_input()
+    print("USAGE: python3 Shelf.py 'Drive Path'")
+    print("NOTE: If no path is given the whole hard drive would be scanned(Take a Lot Of Time) suggested: Specify path ")
+    print("1.Exit and start again with Path specified")
+    print("2.Scan the whole hard drive")
+    choice=input()
     if(choice=='1'):
         sys.exit()
     elif(choice=='2'):
@@ -111,7 +119,7 @@ if len(sys.argv) < 2:
 else:
     path=" ".join(sys.argv[1:])
     if not os.path.exists(path):
-        print "Path Does Not Exist"
+        print("Path Does Not Exist")
         sys.exit()
     if(os.name=='posix'):
         populate(path)

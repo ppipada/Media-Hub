@@ -4,19 +4,19 @@ from django.contrib.auth.models import User
 from .models import Movie
 from bs4 import BeautifulSoup
 import threading
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import os
 import re
 
 def get_youtube_link(movie):
-    query = urllib.quote_plus(movie.Name)
-    f = urllib.urlopen('https://www.youtube.com/results?search_query='+query+'+trailer').read()
+    query = urllib.parse.quote_plus(movie.Name)
+    f = urllib.request.urlopen('https://www.youtube.com/results?search_query='+query+'+trailer').read()
     soup=BeautifulSoup(f,'lxml')
     item = soup.find_all('ol',{'class':'item-section'})
     for itm in item:
         a = item[0].find_all('a',{'class':'yt-uix-sessionlink'})[0]
     a = re.findall('=(.*)',a.get('href'))
-    print a
+    print(a)
     link= 'http://www.youtube.com/embed/'+a[0]
     movie.trailer=link
     movie.save()
@@ -83,7 +83,7 @@ def detail(request,movie_id):
         return redirect('logged_in')
     threadobj= threading.Thread(target=get_youtube_link,args=[])
     movie=get_object_or_404(Movie,id=movie_id)
-    print movie.trailer
+    print(movie.trailer)
     if not movie.trailer:
         try:
             get_youtube_link(movie)

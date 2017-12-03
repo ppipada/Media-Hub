@@ -8,7 +8,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$',views.index,name="index"),
     #movies/
-    url(r'^movies/',include('Movies.urls')),
+    url(r'^movies/',include('Movies.urls', namespace='Movies')),
 
     #register/
     url(r'^register/$',views.register,name="register"),
