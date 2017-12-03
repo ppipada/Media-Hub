@@ -9,7 +9,7 @@ import re
 import shelve
 import sys
 import itertools
-from Media_Portal.global_params import BASEPATH  
+from Media_Portal import global_params  
 if os.name=='nt':
     import win32api
 
@@ -18,14 +18,14 @@ VIDEO_FORMATS=('.mp4','.avi','.mkv','.flv')
 access = imdb.IMDb()
 
 try:
-    os.makedirs(BASEPATH)
+    os.makedirs(global_params.BASEPATH)
 except OSError as e:
     if e.errno != errno.EEXIST:
         raise
 
-shelffile1=shelve.open(os.path.join(BASEPATH,'MovieData'))
-shelffile2=shelve.open(os.path.join(BASEPATH,'Paths'))
-shelffile3=shelve.open(os.path.join(BASEPATH,'Files'))
+shelffile1=shelve.open(global_params.MOVIEDATA_FILE)
+shelffile2=shelve.open(global_params.PATHS_FILE)
+shelffile3=shelve.open(global_params.FILENAMES_FILE)
 
 if 'Movies' not in list(shelffile1.keys()):
     shelffile1['Movies']=list()

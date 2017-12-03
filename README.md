@@ -12,13 +12,19 @@ sudo pip3 install imdbpy
 sudo pip3 install djangorestframework
 ```
 
-### Setting Up
+### Database initialization
+If setting up the app for the **first time**, initialize the sqlite db
 ```
+python3 manage.py migrate
+```
+
+### Setting Up
 Inside Media-Hub
+```
 python3 Shelf.py "Media Directory(Suggested) or leave blank to search the whole hard drive"
 python3 manage.py populate
 ```
-Shelf.py goes through the given directory or the whole hard drive(depending on choice) looking for potential movie files and then stores the movie object returned by Imdbpy in a file.  
+Shelf.py goes through the given directory or the whole hard drive(depending on choice) looking for potential movie files and then stores the movie object returned by Imdbpy in a file. 
 This file is then accesed by populate command which then populates the database with relevent entires  
   
 **Note:**  

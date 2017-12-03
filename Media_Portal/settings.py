@@ -11,11 +11,14 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
-from .global_params import BASEPATH  
+from . import global_params  
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 #BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BASE_DIR = BASEPATH
+BASE_DIR = global_params.BASEPATH
+MOVIEDATA_FILE = global_params.MOVIEDATA_FILE
+FILENAMES_FILE = global_params.FILENAMES_FILE
+PATHS_FILE = global_params.PATHS_FILE
 
 
 # Quick-start development settings - unsuitable for production

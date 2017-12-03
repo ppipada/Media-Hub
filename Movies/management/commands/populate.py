@@ -4,13 +4,13 @@ from Movies.models import Movie
 from django.core.files.base import ContentFile
 import shelve
 import urllib.request, urllib.parse, urllib.error
-
+from django.conf import settings
 
 class Command(BaseCommand):
 
     def handle(self,*arg,**options):
-        SFile=shelve.open('MovieData')
-        Shelf=shelve.open('Path')
+        SFile=shelve.open(settings.MOVIEDATA_FILE)
+        Shelf=shelve.open(settings.PATHS_FILE)
         for (movie,path) in zip(SFile['Movies'],Shelf['Paths']):
             mov=Movie()
             if not Movie.objects.filter(Name=movie['title']).exists():
